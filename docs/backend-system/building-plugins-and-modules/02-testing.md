@@ -132,14 +132,16 @@ describe('MyDatabaseClass', () => {
     // Easily run the exact same test onto all supported databases
     it.each(databases.eachSupportedId())(
       'should run foo on %p',
-      async databaseId => {
+      async (databaseId) => {
         const { knex, subject } = await createSubject(databaseId);
         // raw knex is available for underlying manipulation
         await knex<FooTableRow>('foo').insert({ value: 2 });
         // drive your system under test as usual
         await expect(subject.foos()).resolves.toEqual([{ value: 2 }]);
-      });
+      }
+    );
   });
+});
 ```
 
 If you want to pass the test database instance into backend plugins or services,
